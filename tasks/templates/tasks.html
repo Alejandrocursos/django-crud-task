@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="container">
+    <h1>Tareas de {{user.username}}</h1>
+    <a href="/tasks/create">Crear tarea</a>
+
+    <div class="row justify-content-center">
+        <div class="accordion col-md-4" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed badge bg-secondary" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true"
+                        aria-controls="collapse1">Tareas pendientes
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        {% for task in tasks %}
+                        {% if task.datecompleted == null %}
+                        {% if task.important > 0 %}
+                        <div class="card card-body mb-2 bg-success p-2" style="--bs-bg-opacity: .{{task.important}};">
+                            {% endif %}
+                            <a href="{% url 'detail_task' task.id %}">
+                                <h3>{{task.title}}</h3>
+                                <p>{{task.description}}</p>
+                                <p>Creación: {{task.created|date:'M J Y:i'}}</p>
+                            </a>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion col-md-4" id="accordionExample2">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed badge bg-secondary" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="true"
+                        aria-controls="collapse2">Tareas completadas
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse show" data-bs-parent="#accordionExample2">
+                    <div class="accordion-body">
+                        {% for task in tasks %}
+                        {% if task.datecompleted != null %}
+                        <div class="card card-body mb-2">
+                            <a href="{% url 'detail_task' task.id %}">
+                                <h3>{{task.title}}</h3>
+                                <p>{{task.description}}</p>
+                                <p>Creación: {{task.created|date:'M J Y:i'}}</p>
+                                <p>Fecha límite: {{task.datecompleted|date:'M J Y:i'}}</p>
+                            </a>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+{% endblock %}

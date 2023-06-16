@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if task.important == True %}
+<main>
+
+
+<h1 class="h1">{{ task.title }}</h1>
+
+{% else  %}
+
+<h1>{{ task.title }}</h1>
+
+{% endif %}
+
+<p>{{ task.description }}</p>
+<p>{{task.created|date:'M J Y:i'}}</p>
+<p>{{task.datecompleted|date:'M J Y:i'}}</p>
+
+
+{{error}}
+
+<form method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button>Actualizar</button> 
+    
+    
+</form>
+
+<form action="{% url 'complete_task' task.id %}" method="POST">
+    {% csrf_token %}
+    <button>Completar</button>
+</form>
+
+<form action="{% url 'delete_task' task.id %}" method="POST">
+    {% csrf_token %}
+    <button>Borrar</button>
+</form>
+
+</main>
+
+
+{% endblock %}
